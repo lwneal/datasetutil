@@ -11,8 +11,6 @@ import numpy as np
 import random
 import imutil
 
-# TODO: Configure this
-DATA_DIR = '/mnt/nfs/data'
 
 # Converters can be used like a function, on a single example or a batch
 class Converter(object):
@@ -49,7 +47,7 @@ class ImageConverter(Converter):
     def to_array(self, example):
         filename = os.path.expanduser(example['filename'])
         if not filename.startswith('/'):
-            filename = os.path.join(DATA_DIR, filename)
+            filename = os.path.join(self.data_dir, filename)
         box = example.get('box') if self.bounding_box else None
         img = imutil.decode_jpg(filename,
                 resize_to=self.img_shape,
@@ -87,7 +85,7 @@ class SkyRTSConverter(Converter):
     def get_filename(self, example, key):
         filename = os.path.expanduser(example[key])
         if not filename.startswith('/'):
-            filename = os.path.join(DATA_DIR, filename)
+            filename = os.path.join(self.data_dir, filename)
         return filename
 
     def filename_to_pixels(self, filename):
@@ -126,7 +124,7 @@ class SC2RGBConverter(Converter):
     def get_filename(self, example, key):
         filename = os.path.expanduser(example[key])
         if not filename.startswith('/'):
-            filename = os.path.join(DATA_DIR, filename)
+            filename = os.path.join(self.data_dir, filename)
         return filename
 
     def filename_to_pixels(self, filename):
