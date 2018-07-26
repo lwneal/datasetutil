@@ -3,13 +3,24 @@
  If it begins with the two byte sequence 0x1F8B then it is compressed
  Otherwise it is plain-text
  To decompress it, cat filename.dataset | gzip
- A decompressed .dataset file is a newline-delimited text file
- Each line is a JSON key-value dictionary object.
+
+ A decompressed .dataset file is a file in the NDJSON format.
+ That is, it is a newline-delimited text file.
+ Each line is a JSON key-value dictionary representing one example.
+
+ Eg.
   {"filename": "foo/bar.jpg", "baz": 1}
   {"filename": "foo/boo.jpg", "baz": -1}
   {"filename": "baz/foo.jpg", "baz": 2, "color": "blue"}
- By convention, "filename" is a relative path to a JPG/PNG file in the DATA_DIR directory
- Any boolean property should start with "is_" or "has_"
+
+ A key that exists in any example must exist in all examples (with the exception of "fold").
+ Any property ending with "filename" should be a valid relative path string.
+ Paths should be relative to the parent directory of the .dataset file at the time it is generated.
+ Any property starting with the prefix "is_" or "has_" should be of Boolean type.
+ The "fold" property, if included, must be a string. If not included, it defaults to "train"
+ All other properties can be interpreted freely by Converter objects.
+
+ The purpose of this format is to be simple to load, and easy to convert into other formats
 """
 import random
 import os
