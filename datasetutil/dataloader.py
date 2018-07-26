@@ -1,7 +1,7 @@
 import math
 import torch
-from dataset_file import DatasetFile
-from converter import ImageConverter, QValueConverter
+from datasetutil.dataset_file import DatasetFile
+from datasetutil.converter import ImageConverter, LabelConverter
 
 
 class CustomDataloader(object):
@@ -12,13 +12,12 @@ class CustomDataloader(object):
                  shuffle=True,
                  last_batch=False,
                  example_count=None,
-                 img_format=None,
+                 img_format=ImageConverter,
+                 label_format=LabelConverter,
                  **kwargs):
         self.dsf = DatasetFile(dataset, example_count=example_count)
-        if img_format is None:
-            img_format = ImageConverter
         self.img_conv = img_format(self.dsf, **kwargs)
-        self.label_conv = QValueConverter(self.dsf, **kwargs)
+        self.label_conv = label_format(self.dsf, **kwargs)
         self.batch_size = batch_size
         self.fold = fold
         self.last_batch = last_batch
