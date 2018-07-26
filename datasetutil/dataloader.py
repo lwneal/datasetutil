@@ -5,7 +5,15 @@ from converter import ImageConverter, QValueConverter
 
 
 class CustomDataloader(object):
-    def __init__(self, dataset='mnist.dataset', batch_size=16, fold='train', shuffle=True, last_batch=False, example_count=None, img_format=None, **kwargs):
+    def __init__(self,
+                 dataset='mnist.dataset',
+                 batch_size=16,
+                 fold='train',
+                 shuffle=True,
+                 last_batch=False,
+                 example_count=None,
+                 img_format=None,
+                 **kwargs):
         self.dsf = DatasetFile(dataset, example_count=example_count)
         if img_format is None:
             img_format = ImageConverter
