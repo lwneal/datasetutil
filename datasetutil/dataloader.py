@@ -45,11 +45,7 @@ class CustomDataloader(object):
     def convert(self, batch):
         images = self.img_conv(batch)
         labels = self.label_conv(batch)
-        qvals, masks = labels[:,0], labels[:,1]
-        images = torch.FloatTensor(images).cuda()
-        masks = torch.FloatTensor(masks).cuda()
-        qvals = torch.FloatTensor(qvals).cuda()
-        return images, (qvals, masks)
+        return images, labels
 
     def __len__(self):
         return math.floor(self.dsf.count(self.fold) / self.batch_size)
