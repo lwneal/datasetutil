@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='datasetutil',
-    version='0.1.0',
+    version='0.1.1',
     description='Simple image dataset format, with several useful download scripts',
     author='Larry Neal',
     author_email='nealla@lwneal.com',
