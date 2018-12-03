@@ -49,12 +49,12 @@ class ImageConverter(Converter):
         if not filename.startswith('/'):
             filename = os.path.join(self.data_dir, filename)
         box = example.get('box') if self.bounding_box else None
-        img = imutil.decode_jpg(filename,
+        img = imutil.load(filename,
                 resize_to=self.img_shape,
                 crop_to_box=box)
         if self.delete_background:
             seg_filename = os.path.expanduser(example['segmentation'])
-            segmentation = imutil.decode_jpg(seg_filename,
+            segmentation = imutil.load(seg_filename,
                     resize_to=self.img_shape,
                     crop_to_box=box)
             foreground_mask = np.mean(segmentation, axis=-1) / 255.
@@ -93,7 +93,7 @@ class SkyRTSConverter(Converter):
         # It encodes frames of a game, similar to the SC2 API
         # From top-left to bottom-right, maps represent:
         # Health, Agent, Small Towers, Big Towers, Friends, Enemies
-        img = imutil.decode_jpg(filename, resize_to=None)
+        img = imutil.load(filename, resize_to=None)
         assert img.shape == (40*3, 40*2, 3)
         # Pytorch convnets require BCHW inputs
         channels = np.zeros((6, 40, 40))
@@ -129,7 +129,7 @@ class SC2RGBConverter(Converter):
 
     def filename_to_pixels(self, filename):
         # Input is a rendered RGB frame of the game
-        pixels = imutil.decode_jpg(filename, resize_to=(40,40))
+        pixels = imutil.load(filename, resize_to=(40,40))
         pixels = pixels.transpose(2, 0, 1)
         pixels *= 1/255.
         return pixels
